@@ -87,7 +87,7 @@ class DrugController extends Controller
     {
         try
         {
-            $data = Drug::where('id', $id)->update(['name' => ucwords($request->input('name'))]);
+            $data = Drug::where('id', $id)->update($request->all());
             if(!$data){
                 return response(['message' => 'Medicamento não encontrado.'], 404);
             }

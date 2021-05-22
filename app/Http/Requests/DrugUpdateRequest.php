@@ -26,11 +26,11 @@ class DrugUpdateRequest extends FormRequest
         return [
             'id' => 'exists:App\Models\Drug,id',
             'name' => 'required',
-            'dosage' => 'required|integer|max:3',
+            'dosage' => 'required|integer|digits_between:1,3',
             'price' => 'sometimes',
             'schedule_id' => 'required|exists:App\Models\Schedule,id',
             'person_id' => 'required|exists:App\Models\Person,id',
-            'period' => 'required|integer|max:3'
+            'period' => 'required|integer|digits_between:1,3'
         ];
     }
 }
