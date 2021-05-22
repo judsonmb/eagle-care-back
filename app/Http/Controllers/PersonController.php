@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Person;
 use App\Http\Requests\PersonStoreRequest;
 use App\Http\Requests\PersonUpdateRequest;
-use Illuminate\Database\QueryException;
 
 class PersonController extends Controller
 {
@@ -92,7 +91,7 @@ class PersonController extends Controller
             if(!$data){
                 return response(['message' => 'Pessoa não encontrado.'], 404);
             }
-            return response(['message' => 'Pessoa editado com sucesso!'], 200);
+            return response(['message' => 'Pessoa editada com sucesso!'], 200);
         }
         catch(\Exception $e)
         {

@@ -20,4 +20,5 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('users', App\Http\Controllers\UserController::class);
     Route::resource('people', App\Http\Controllers\PersonController::class);
     Route::resource('schedules', App\Http\Controllers\ScheduleController::class);
+    Route::resource('drugs', App\Http\Controllers\DrugController::class);
 });

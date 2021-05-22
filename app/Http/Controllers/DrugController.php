@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Schedule;
-use App\Http\Requests\ScheduleStoreRequest;
-use App\Http\Requests\ScheduleUpdateRequest;
+use App\Models\Drug;
+use App\Http\Requests\DrugStoreRequest;
+use App\Http\Requests\DrugUpdateRequest;
 
-class ScheduleController extends Controller
+class DrugController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class ScheduleController extends Controller
     {
         try
         {
-            $data = Schedule::orderby('id')->get();
+            $data = Drug::with('schedule')->with('person')->orderby('name')->get();
             return response(['data' => $data], 200);
         }catch(\Exception $e)
         {
@@ -27,17 +27,17 @@ class ScheduleController extends Controller
     }
 
     /**
-     * Store a newly created Schedule in storage.
+     * Store a newly created Drug in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ScheduleStoreRequest $request)
+    public function store(DrugStoreRequest $request)
     {
         try
         {
-            Schedule::create($request->all());
-            return response(['message' => 'Horário cadastrado com sucesso!'], 200);
+            $data = Drug::create($request->all());
+            return response(['message' => 'Medicamento cadastrado com sucesso!','data' => $data], 200);
         }
         catch(\Exception $e)
         {
@@ -66,11 +66,11 @@ class ScheduleController extends Controller
     {
         try
         {
-            $data = Schedule::find($id);
+            $data = Drug::find($id);
             if(!$data){
-                return response(['message' => 'Horário não encontrado.'], 404);
+                return response(['message' => 'Medicamento não encontrado.'], 404);
             }
-            return response(['message' => 'Horário encontrado com sucesso.', 'data' => $data], 200);
+            return response(['message' => 'Medicamento encontrado com sucesso.', 'data' => $data], 200);
         }catch(\Exception $e){
             return response(['message' => 'Um erro ocorreu. Contate o suporte.'], 500);
         }
@@ -83,15 +83,15 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ScheduleUpdateRequest $request, $id)
+    public function update(DrugUpdateRequest $request, $id)
     {
         try
         {
-            $data = Schedule::where('id', $id)->update($request->all());
+            $data = Drug::where('id', $id)->update(['name' => ucwords($request->input('name'))]);
             if(!$data){
-                return response(['message' => 'Horário não encontrado.'], 404);
+                return response(['message' => 'Medicamento não encontrado.'], 404);
             }
-            return response(['message' => 'Horário editado com sucesso!'], 200);
+            return response(['message' => 'Medicamento editado com sucesso!'], 200);
         }
         catch(\Exception $e)
         {
@@ -109,12 +109,12 @@ class ScheduleController extends Controller
     {
         try
         {
-            $schedule = Schedule::find($id);
-            if(!$schedule){
-                return response(['message' => 'Horário não encontrado.'], 404);
+            $Drug = Drug::find($id);
+            if(!$Drug){
+                return response(['message' => 'Medicamento não encontrado.'], 404);
             }
-            $schedule->delete();
-            return response(['message' => 'Horário deletado com sucesso!'], 200);
+            $Drug->delete();
+            return response(['message' => 'Medicamento deletado com sucesso!'], 200);
         }
         catch(\Exception $e)
         {

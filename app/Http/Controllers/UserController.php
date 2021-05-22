@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
-use Illuminate\Database\QueryException;
 
 class UserController extends Controller
 {
