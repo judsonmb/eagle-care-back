@@ -24,7 +24,7 @@ class ScheduleStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'schedule' => 'required',
+            'interval' => 'required|max:12',
         ];
     }
 }

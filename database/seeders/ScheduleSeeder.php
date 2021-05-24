@@ -15,11 +15,19 @@ class ScheduleSeeder extends Seeder
     public function run()
     {
         DB::table('schedules')->insert([
-            'schedule' => '8 em 8 horas',
+            'interval' => 3,
         ]);
 
         DB::table('schedules')->insert([
-            'schedule' => '6 em 6 horas',
+            'interval' => 6,
+        ]);
+
+        DB::table('schedules')->insert([
+            'interval' => 8,
+        ]);
+
+        DB::table('schedules')->insert([
+            'interval' => 12,
         ]);
     }
 }

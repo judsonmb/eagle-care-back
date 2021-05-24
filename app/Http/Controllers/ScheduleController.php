@@ -18,7 +18,7 @@ class ScheduleController extends Controller
     {
         try
         {
-            $data = Schedule::orderby('id')->get();
+            $data = Schedule::orderby('interval')->get();
             return response(['data' => $data], 200);
         }catch(\Exception $e)
         {

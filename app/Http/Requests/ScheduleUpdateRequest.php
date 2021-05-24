@@ -25,7 +25,7 @@ class ScheduleUpdateRequest extends FormRequest
     {
         return [
             'id' => 'exists:App\Models\Schedule,id',
-            'schedule' => 'required',
+            'interval' => 'required|max:12',
         ];
     }
 }
