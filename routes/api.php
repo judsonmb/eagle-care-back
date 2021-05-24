@@ -19,10 +19,10 @@ Route::post('login', [App\Http\Controllers\UserController::class, 'login']);
 Route::middleware('auth:api')->group( function () {
     Route::resource('users', App\Http\Controllers\UserController::class);
     Route::resource('people', App\Http\Controllers\PersonController::class);
-    Route::resource('schedules', App\Http\Controllers\ScheduleController::class);
     Route::resource('drugs', App\Http\Controllers\DrugController::class);
-    Route::get('/who-more-expend', [App\Http\Controllers\ReportController::class, 'getWhoMoreExpend']);
-    Route::get('/more-used-drugs', [App\Http\Controllers\ReportController::class, 'getMoreUsedDrugs']);
-    Route::get('/people-use-same-drugs', [App\Http\Controllers\ReportController::class, 'getPeopleUseSameDrugs']);
+    Route::get('schedules', [App\Http\Controllers\ScheduleController::class, 'index']);
+    Route::get('/who-more-expend', [App\Http\Controllers\DrugController::class, 'getWhoMoreExpend']);
+    Route::get('/more-used-drugs', [App\Http\Controllers\DrugController::class, 'getMoreUsedDrugs']);
+    Route::get('/people-use-same-drugs', [App\Http\Controllers\DrugController::class, 'getPeopleUseSameDrugs']);
 
 });

@@ -12,7 +12,7 @@ use DB;
 class DrugController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Calls the Drug's model and returns a list of drugs with its relations.
      *
      * @return \Illuminate\Http\Response
      */
@@ -30,6 +30,8 @@ class DrugController extends Controller
 
     /**
      * Store a newly created Drug in storage.
+     * 
+     * Store the correspondent schedules. 
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -40,72 +42,15 @@ class DrugController extends Controller
         {
             $form = $request->all();
             $form['name'] = strtoupper($form['name']);
-            $data = Drug::create($form);
-            $times = ($data->period*24)/$data->interval;
-            $schedule = $data->created_at;
-            for($j = 1; $j<=$times; $j++)
+            $drugData = Drug::create($form);
+            $scheduleData = Schedule::storeDrugSchedules($drugData->id, $drugData->period, 
+            $drugData->interval, $drugData->created_at);
+
+            if(!$drugData || !$scheduleData)
             {
-                DB::table('schedules')->insert([
-                    'drug_id' => $data->id,
-                    'schedule' => $schedule
-                ]);
-                $schedule = date('Y-m-d H:i:s', strtotime($schedule . " + $data->interval hours"));
+                return response(['message' => 'Um erro ocorreu. Contate o suporte.'], 500);
             }
-            return response(['message' => 'Medicamento cadastrado com sucesso!','data' => $data], 200);
-        }
-        catch(\Exception $e)
-        {
-            return response(['message' => $e->getMessage()], 500);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        try
-        {
-            $data = Drug::find($id);
-            if(!$data){
-                return response(['message' => 'Medicamento não encontrado.'], 404);
-            }
-            return response(['message' => 'Medicamento encontrado com sucesso.', 'data' => $data], 200);
-        }catch(\Exception $e){
-            return response(['message' => 'Um erro ocorreu. Contate o suporte.'], 500);
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(DrugUpdateRequest $request, $id)
-    {
-        try
-        {
-            $data = Drug::where('id', $id)->update($request->all());
-            if(!$data){
-                return response(['message' => 'Medicamento não encontrado.'], 404);
-            }
-            return response(['message' => 'Medicamento editado com sucesso!'], 200);
+            return response(['message' => 'Medicamento cadastrado com sucesso!','data' => $drugData], 200);
         }
         catch(\Exception $e)
         {
@@ -113,8 +58,10 @@ class DrugController extends Controller
         }
     }
 
-    /**
+     /**
      * Remove the specified resource from storage.
+     * 
+     * Remove the correspondent schedules.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -133,6 +80,48 @@ class DrugController extends Controller
         catch(\Exception $e)
         {
             return response(['message' => 'Um erro ocorreu. Contate o suporte.'], 500);
+        }
+    }
+
+    /**
+     * Get the ranking of people who more expend with drugs.
+     */
+    public function getWhoMoreExpend()
+    {
+        try
+        {
+            $data = Drug::getWhoMoreExpend();
+            return response(['message' => 'Relatório montado com sucesso.', 'data' => $data], 200);
+        }catch(\Exception $e){
+            return response(['message' => $e->getMessage()], 500);
+        }
+    }
+
+     /**
+     * Get the ranking of more used drugs.
+     */
+    public function getMoreUsedDrugs()
+    {
+        try
+        {
+            $data = Drug::getMoreUsedDrugs();
+            return response(['message' => 'Relatório montado com sucesso.', 'data' => $data], 200);
+        }catch(\Exception $e){
+            return response(['message' => $e->getMessage()], 500);
+        }
+    }
+
+     /**
+     * Get the ranking of people who use same drugs.
+     */
+    public function getPeopleUseSameDrugs()
+    {
+        try
+        {
+            $data = Drug::getPeopleUseSameDrugs();
+            return response(['message' => 'Relatório montado com sucesso.', 'data' => $data], 200);
+        }catch(\Exception $e){
+            return response(['message' => $e->getMessage()], 500);
         }
     }
 }

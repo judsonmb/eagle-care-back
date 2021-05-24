@@ -60,6 +60,9 @@ class User extends Authenticatable
         return $data;
     }
 
+     /**
+     * Store a newly created user in storage.
+     */
     protected function store(Array $input)
     {
         $input['name'] = ucwords($input['name']);

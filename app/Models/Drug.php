@@ -48,5 +48,44 @@ class Drug extends Model
         ->get();
     }
 
+    /**
+     * Get the ranking of people who more expend with drugs.
+     */
+    public static function getWhoMoreExpend()
+    {
+        return Drug::select('people.name', DB::raw('sum(drugs.price) as value'))
+            ->join('people', 'people.id', 'drugs.person_id')
+            ->groupby('people.name')
+            ->orderby(DB::raw('sum(drugs.price)'),'desc')
+            ->get();
+    }
+
+    /**
+     * Get the ranking of more used drugs.
+     */
+    public static function getMoreUsedDrugs()
+    {
+        return Drug::select('name', DB::raw('count(name) as amount'))
+            ->groupby('name')
+            ->get();
+    }
+
+    /**
+     * Get the ranking of people who use same drugs.
+     */
+    public static function getPeopleUseSameDrugs()
+    {
+        $data = Drug::select('name')->distinct()->get();
+        foreach($data as $d)
+        {
+            $people = Drug::select('drugs.person_id', 'people.name')
+            ->join('people', 'people.id', 'drugs.person_id')
+            ->where('drugs.name', $d->name)
+            ->get();
+            $d['people'] = $people;
+        }
+        return $data;
+    }
+
 
 }

@@ -19,12 +19,10 @@ class UserController extends Controller
     {
         try{
             $data = User::login($request->all());
-
             if(empty($data))
             {
                 return response(['message' => 'E-mail e senha não conferem.'], 401);
             }
-
             return response(['data' => $data], 200);
         }
         catch(\Exception $e)
@@ -68,17 +66,6 @@ class UserController extends Controller
         {
             return response(['message' => 'Um erro ocorreu. Contate o suporte.'], 500);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
