@@ -67,6 +67,8 @@ class Drug extends Model
     {
         return Drug::select('name', DB::raw('count(name) as amount'))
             ->groupby('name')
+            ->orderby(DB::raw('count(name)'), 'desc')
+            ->orderby('name')
             ->get();
     }
 
