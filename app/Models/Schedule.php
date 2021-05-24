@@ -15,6 +15,14 @@ class Schedule extends Model
      * @var array
      */
     protected $fillable = [
-        'schedule',
+        'drug_id', 'schedule'
     ];
+
+    /**
+     * Get the person that owns the drug.
+     */
+    public function Drug()
+    {
+        return $this->belongsTo(Drug::class);
+    }
 }

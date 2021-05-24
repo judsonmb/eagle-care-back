@@ -15,49 +15,25 @@ class DrugSeeder extends Seeder
     public function run()
     {
         DB::table('drugs')->insert([
+            'id' => 1,
             'name' => 'Paracetamol',
             'dosage' => 10,
             'price' => 20,
-            'schedule_id' => 1,
+            'interval' => 6,
             'person_id' => 1,
-            'period' => 2
+            'period' => 2,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
 
         DB::table('drugs')->insert([
-            'name' => 'Paracetamol',
+            'id' => 2,
+            'name' => 'Dipirona',
             'dosage' => 10,
-            'price' => 20,
-            'schedule_id' => 1,
+            'price' => 14,
+            'interval' => 3,
             'person_id' => 2,
-            'period' => 2
-        ]);
-
-        DB::table('drugs')->insert([
-            'name' => 'Paracetamol',
-            'dosage' => 10,
-            'price' => 20,
-            'schedule_id' => 1,
-            'person_id' => 3,
-            'period' => 4
-        ]);
-
-        DB::table('drugs')->insert([
-            'name' => 'Paracetamol',
-            'dosage' => 10,
-            'price' => 20,
-            'schedule_id' => 1,
-            'person_id' => 4,
-            'period' => 2
-        ]);
-
-        DB::table('drugs')->insert([
-            'name' => 'Paracetamol',
-            'dosage' => 10,
-            'price' => 20,
-            'schedule_id' => 1,
-            'person_id' => 5,
-            'period' => 3
-        ]);
-     
+            'period' => 2,
+            'created_at' => date('Y-m-d H:i:s')
+        ]);  
     }
 }

@@ -18,7 +18,7 @@ class CreateDrugsTable extends Migration
             $table->string('name');
             $table->integer('dosage');
             $table->double('price')->nullable();
-            $table->foreignId('schedule_id')->constrained();
+            $table->integer('interval')->constrained();
             $table->foreignId('person_id')->constrained();
             $table->integer('period');
             $table->timestamps();

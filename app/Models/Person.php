@@ -17,4 +17,12 @@ class Person extends Model
     protected $fillable = [
         'name',
     ];
+
+    /**
+     * Get the drugs that owns the person.
+     */
+    public function Drugs()
+    {
+        return $this->hasMany(Drug::class);
+    }
 }

@@ -27,7 +27,7 @@ class DrugStoreRequest extends FormRequest
             'name' => 'required',
             'dosage' => 'required|integer|digits_between:1,3',
             'price' => 'sometimes',
-            'schedule_id' => 'required|exists:App\Models\Schedule,id',
+            'interval' => 'required|min:1|max:24',
             'person_id' => 'required|exists:App\Models\Person,id',
             'period' => 'required|integer|digits_between:1,3'
         ];

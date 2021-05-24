@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Drug;
+use App\Models\Schedule;
 use App\Http\Requests\DrugStoreRequest;
 use App\Http\Requests\DrugUpdateRequest;
 
@@ -18,7 +19,7 @@ class DrugController extends Controller
     {
         try
         {
-            $data = Drug::with('schedule')->with('person')->orderby('name')->get();
+            $data = Drug::getIndexData();
             return response(['data' => $data], 200);
         }catch(\Exception $e)
         {
@@ -37,6 +38,16 @@ class DrugController extends Controller
         try
         {
             $data = Drug::create($request->all());
+            $times = ($data->period*24)/$data->interval;
+            $schedule = $data->created_at;
+            for($j = 1; $j<=$times; $j++)
+            {
+                DB::table('schedules')->insert([
+                    'drug_id' => $i,
+                    'schedule' => $schedule
+                ]);
+                $schedule = date('Y-m-d H:i:s', strtotime($schedule . " + $data->interval hours"));
+            }
             return response(['message' => 'Medicamento cadastrado com sucesso!','data' => $data], 200);
         }
         catch(\Exception $e)
@@ -109,11 +120,11 @@ class DrugController extends Controller
     {
         try
         {
-            $Drug = Drug::find($id);
-            if(!$Drug){
+            $drug = Drug::find($id);
+            if(!$drug){
                 return response(['message' => 'Medicamento não encontrado.'], 404);
             }
-            $Drug->delete();
+            $drug->delete();
             return response(['message' => 'Medicamento deletado com sucesso!'], 200);
         }
         catch(\Exception $e)
