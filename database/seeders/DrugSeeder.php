@@ -16,7 +16,7 @@ class DrugSeeder extends Seeder
     {
         DB::table('drugs')->insert([
             'id' => 1,
-            'name' => 'Paracetamol',
+            'name' => 'PARACETAMOL',
             'dosage' => 10,
             'price' => 20,
             'interval' => 6,
@@ -27,7 +27,7 @@ class DrugSeeder extends Seeder
 
         DB::table('drugs')->insert([
             'id' => 2,
-            'name' => 'Dipirona',
+            'name' => 'DIPIRONA',
             'dosage' => 10,
             'price' => 14,
             'interval' => 3,

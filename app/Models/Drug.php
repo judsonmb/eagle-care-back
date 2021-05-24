@@ -44,6 +44,7 @@ class Drug extends Model
         'drugs.price', 'drugs.interval', 'people.name as person_name', 'drugs.period',
         DB::raw("drugs.created_at as first_time_at"))
         ->join('people', 'people.id', 'drugs.id')
+        ->orderby('drugs.name')
         ->get();
     }
 

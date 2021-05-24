@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     protected function login(Array $input)
     {
-        $data = Array();
+        $data = Array(); 
 
         if(Auth::attempt(['email' => $input['email'], 'password' => $input['password']])){ 
             $user = Auth::user(); 

@@ -21,4 +21,8 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('people', App\Http\Controllers\PersonController::class);
     Route::resource('schedules', App\Http\Controllers\ScheduleController::class);
     Route::resource('drugs', App\Http\Controllers\DrugController::class);
+    Route::get('/who-more-expend', [App\Http\Controllers\ReportController::class, 'getWhoMoreExpend']);
+    Route::get('/more-used-drugs', [App\Http\Controllers\ReportController::class, 'getMoreUsedDrugs']);
+    Route::get('/people-use-same-drugs', [App\Http\Controllers\ReportController::class, 'getPeopleUseSameDrugs']);
+
 });

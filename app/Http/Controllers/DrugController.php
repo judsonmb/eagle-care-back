@@ -7,6 +7,7 @@ use App\Models\Drug;
 use App\Models\Schedule;
 use App\Http\Requests\DrugStoreRequest;
 use App\Http\Requests\DrugUpdateRequest;
+use DB;
 
 class DrugController extends Controller
 {
@@ -37,13 +38,15 @@ class DrugController extends Controller
     {
         try
         {
-            $data = Drug::create($request->all());
+            $form = $request->all();
+            $form['name'] = strtoupper($form['name']);
+            $data = Drug::create($form);
             $times = ($data->period*24)/$data->interval;
             $schedule = $data->created_at;
             for($j = 1; $j<=$times; $j++)
             {
                 DB::table('schedules')->insert([
-                    'drug_id' => $i,
+                    'drug_id' => $data->id,
                     'schedule' => $schedule
                 ]);
                 $schedule = date('Y-m-d H:i:s', strtotime($schedule . " + $data->interval hours"));
@@ -52,7 +55,7 @@ class DrugController extends Controller
         }
         catch(\Exception $e)
         {
-            return response(['message' => 'Um erro ocorreu. Contate o suporte.'], 500);
+            return response(['message' => $e->getMessage()], 500);
         }
     }
 
