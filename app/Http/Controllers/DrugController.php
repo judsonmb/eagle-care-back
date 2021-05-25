@@ -24,7 +24,7 @@ class DrugController extends Controller
             return response(['data' => $data], 200);
         }catch(\Exception $e)
         {
-            return response(['message' => 'Um erro ocorreu. Contate o suporte.'], 500);
+            return response(['message' => $e->getMessage()], 500);
         }
     }
 

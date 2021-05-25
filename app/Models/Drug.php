@@ -40,9 +40,13 @@ class Drug extends Model
      */
     public static function getIndexData()
     {
-        return Drug::select('drugs.id', 'drugs.name', 'drugs.dosage', 
-        'drugs.price', 'drugs.interval', 'people.name as person_name', 'drugs.period',
-        DB::raw("drugs.created_at as first_time_at"))
+        return Drug::select('drugs.id', 'drugs.name', 
+        DB::raw('CONCAT(drugs.dosage," mg") as dosage'), 
+        DB::raw('IFNULL(CONCAT("R$ ", FORMAT(drugs.price, 2)), 0) as price'), 
+        DB::raw('CONCAT(drugs.interval," horas") as "interval"'), 
+        'people.name as person_name',
+        DB::raw('CONCAT(drugs.period," dias") as period'), 
+        DB::raw('DATE_FORMAT(drugs.created_at, "%d/%m/%Y às %H:%i:%s") as first_time_at'))
         ->join('people', 'people.id', 'drugs.id')
         ->orderby('drugs.name')
         ->get();
@@ -53,7 +57,7 @@ class Drug extends Model
      */
     public static function getWhoMoreExpend()
     {
-        return Drug::select('people.name', DB::raw('sum(drugs.price) as value'))
+        return Drug::select('people.name', DB::raw('CONCAT("R$ ", FORMAT(sum(drugs.price), 2)) as value'))
             ->join('people', 'people.id', 'drugs.person_id')
             ->groupby('people.name')
             ->orderby(DB::raw('sum(drugs.price)'),'desc')

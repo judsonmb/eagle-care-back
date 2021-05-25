@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Schedule extends Model
 {
@@ -57,10 +58,14 @@ class Schedule extends Model
      * Calls the Schedule's model and returns a list of schedules with its relations.
      */
     public static function getOrderedSchedulesAndRelations()
-    {
-        return Schedule::with('drug.person')
+    {        
+        return Schedule::select('schedules.id', 
+        DB::raw('DATE_FORMAT(schedules.schedule, "%d/%m/%Y às %H:%i:%s") as schedule'), 
+        'drugs.name as drug_name', 'people.name as person_name')
+            ->join('drugs', 'schedules.drug_id', 'drugs.id')
+            ->join('people', 'drugs.person_id', 'people.id')
             ->where('schedule', '>=', date('Y-m-d H:i:s'))
-            ->orderby('schedule')
+            ->orderby('schedules.schedule')
             ->get();
     }
 }
