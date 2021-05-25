@@ -60,3 +60,10 @@ php artisan key:gen
 ```
 php artisan serve
 ```
+
+- acessos do usuário já cadastrado
+
+```
+gertrudes@gmail.com
+12345678
+```
